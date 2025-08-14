@@ -1,2 +1,2 @@
-# AoChatBot
+# AIChatBot
 Servidor de respuestas a chat
