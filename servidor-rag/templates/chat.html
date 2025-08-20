@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>ChatBot RAG</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        #chatbox { width: 500px; margin: 30px auto; background: #fff; padding: 20px; border-radius: 10px; }
+        .msg { margin: 10px 0; }
+        .user { text-align: right; color: blue; }
+        .bot { text-align: left; color: green; }
+    </style>
+</head>
+<body>
+    <div id="chatbox">
+        <div id="messages"></div>
+        <input type="text" id="input" placeholder="Escribe tu pregunta..." style="width:80%">
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById("input");
+            const question = input.value;
+            if (!question) return;
+
+            // mostrar el mensaje del usuario
+            const msgBox = document.getElementById("messages");
+            msgBox.innerHTML += `<div class="msg user">${question}</div>`;
+
+            // enviar al backend
+            const res = await fetch("/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ question })
+            });
+            const data = await res.json();
+
+            // mostrar la respuesta del bot
+            msgBox.innerHTML += `<div class="msg bot">${data.answer}</div>`;
+            input.value = "";
+            msgBox.scrollTop = msgBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
