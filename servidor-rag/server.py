@@ -13,6 +13,7 @@ from pinecone import Pinecone, ServerlessSpec
 # CONFIGURACIÓN
 # ========================
 
+
 openai.api_key = os.environ["AZURE_OPENAI_API_KEY"]
 openai.api_base = os.environ["AZURE_OPENAI_API_BASE"]
 openai.api_type = "azure"
@@ -85,16 +86,16 @@ def ask():
 
     return jsonify({"question": query, "answer": result})
 
-# 👇 NUEVA RUTA para GET en "/"
-@app.route("/", methods=["GET"])
-def home():
-    return "Servidor RAG corriendo 🚀. Usa /ask con POST para hacer preguntas."
-
 from flask import render_template
 
 @app.route("/chat", methods=["GET"])
 def chat():
     return render_template("chat.html")
+from flask import render_template
+
+@app.route("/", methods=["GET"])
+def home():
+    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)
