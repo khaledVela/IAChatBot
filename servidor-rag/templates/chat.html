@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AI Chatbot</title>
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link as="style" href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;600;700;900&family=Noto+Sans:wght@400;500;700;900" onload="this.rel='stylesheet'" rel="stylesheet">
+  <link as="style"
+    href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;600;700;900&family=Noto+Sans:wght@400;500;700;900"
+    onload="this.rel='stylesheet'" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
   <style type="text/tailwindcss">
-    :root { --primary-color:#2563eb; --text-primary:#e5e7eb; --text-secondary:#94a3b8; }
-    body { font-family: Inter,"Noto Sans",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; }
+    :root {
+      --primary-color:#2563eb;
+      --text-primary:#e5e7eb;
+      --text-secondary:#94a3b8;
+    }
+    body { 
+      font-family: Inter,"Noto Sans",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    }
   </style>
   <style>
-    /* evitamos doble scroll del documento */
-    html, body { height:100%; }
-    body { overflow:hidden; } /* el único scroll vive en #messagesWrap */
-    /* respeta notch en móviles para el composer */
+    html, body { height: 100%; }
+    body { overflow: hidden; }
     .composer-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
   </style>
 </head>
+
 <body class="bg-gray-900 text-gray-100">
   <div class="relative flex min-h-screen flex-col">
 
-    <!-- Header fijo -->
-    <header id="topbar" class="sticky top-0 z-10 flex items-center justify-between border-b border-gray-800 bg-gray-900/95 backdrop-blur px-6 py-4">
+    <!-- Header -->
+    <header id="topbar"
+      class="sticky top-0 z-10 flex items-center justify-between border-b border-gray-800 bg-gray-900/95 backdrop-blur px-6 py-4">
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 flex items-center justify-center rounded-full bg-[var(--primary-color)] text-white">
           <span class="material-icons text-[20px]">chat</span>
@@ -35,32 +44,30 @@
       </div>
     </header>
 
-    <!-- Área de mensajes (la única que scrollea) -->
+    <!-- Área de mensajes -->
     <main class="flex-1 px-4 md:px-6 lg:px-8">
-      <div class="w-full max-w-4xl mx-auto">
+      <div class="w-full mx-auto">
         <p id="welcome" class="text-center text-[var(--text-secondary)] my-4">
           Escribe tu pregunta y presiona Enter para enviar.
         </p>
-
-        <!-- ¡Importante! Este contenedor tendrá altura calculada y overflow -->
         <div id="messagesWrap" class="overflow-y-auto pr-1">
           <div id="messages" class="flex flex-col gap-4 py-2"></div>
         </div>
       </div>
     </main>
 
-    <!-- Composer fijo abajo -->
-    <div id="composerBar" class="fixed inset-x-0 bottom-0 z-20 bg-gray-900/95 backdrop-blur border-t border-gray-800 composer-safe">
+    <!-- Composer -->
+    <div id="composerBar"
+      class="fixed inset-x-0 bottom-0 z-20 bg-gray-900/95 backdrop-blur border-t border-gray-800 composer-safe">
       <div class="mx-auto w-full max-w-4xl px-4 md:px-6 lg:px-8 py-3">
         <div class="relative">
           <textarea id="input" rows="1"
             placeholder="Escribe tu mensaje... (Enter = enviar · Shift+Enter = nueva línea)"
             class="form-textarea w-full resize-none rounded-lg border-gray-700 bg-gray-800 text-gray-100
-                   focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent p-4 pr-14 transition-shadow"></textarea>
+               focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent p-4 pr-14 transition-shadow"></textarea>
           <button id="sendBtn"
             class="absolute top-1/2 right-3 -translate-y-1/2 flex items-center justify-center size-10 rounded-full
-                   bg-[var(--primary-color)] text-white hover:bg-blue-600 disabled:bg-gray-700"
-            title="Enviar">
+               bg-[var(--primary-color)] text-white hover:bg-blue-600 disabled:bg-gray-700" title="Enviar">
             <span class="material-icons">send</span>
           </button>
         </div>
@@ -70,7 +77,6 @@
   </div>
 
   <script>
-    // --- helpers UI ---
     const topbar = document.getElementById('topbar');
     const composerBar = document.getElementById('composerBar');
     const wrap = document.getElementById('messagesWrap');
@@ -82,15 +88,14 @@
     function relayout() {
       const hh = topbar?.offsetHeight || 0;
       const ch = composerBar?.offsetHeight || 0;
-      // altura visible para los mensajes
       wrap.style.height = `calc(100vh - ${hh}px - ${ch}px)`;
-      wrap.scrollTop = wrap.scrollHeight; // mantener abajo
+      wrap.scrollTop = wrap.scrollHeight;
     }
     window.addEventListener('resize', relayout);
     document.addEventListener('DOMContentLoaded', relayout);
 
     function escapeHtml(str) {
-      return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+      return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
     }
 
     function appendMessage(role, text) {
@@ -103,14 +108,14 @@
       const avatar = document.createElement('div');
       avatar.className = 'bg-center bg-no-repeat bg-cover rounded-full w-10 h-10 shrink-0';
       avatar.style.backgroundImage = isUser
-        ? 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAE1CZ3D7qKbADoWqksXHlS7gvU0gjpymxg1uEXwPRQiGE9q87NEt1eRVynf7DTdHAzVpQt0ANTfDHB3MrDf9Me8T2BYlUgOdl883IK2HJneTLecMT-rYtv5rc5bf2eukFaYNOMKVymoMhdYDtCv00dHbVAvtXLckEJB9yGoNc3stPQ-C9DHQurPCpP5UTviH7SehpqYlFW1zGuYCLnTcPpwXpzVfHi7LxNQdqL-929dRPc4oRQmuji_5G0phyq1pv_vpFKVvlLBpE_")'
-        : 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuApPNd_pMKqOWb0mS5tTZfO802x54MC5_MUNIBYP63qq1Qt6EePxkCd4O4TYtf8XMsAjNN-mCVDxCTQsgASddCe-aHOtn_n7Ojv6U99H-ux5LYx5mTlz3HhrQa4akXTFtlLgidqdYKJ56quUSIzRD73eMYVHNZ0O259OkAnscCnercjuZnPt3ckiwdvaaKDSh6bskduo_9ZWZrRNNGyCk5mgrUMjFom4KCnPuFR3fCy8cxumS8uY_id5VKEtqfxOWPVjBBWmadYi2A5")';
+        ? 'url("https://i.pravatar.cc/100?img=12")'
+        : 'url("https://i.pravatar.cc/100?img=5")';
 
       const bubble = document.createElement('div');
       bubble.className = (isUser
-        ? 'bg-[var(--primary-color)] text-white'
-        : 'bg-gray-800 text-gray-100'
-      ) + ' rounded-lg p-3 shadow-sm whitespace-pre-wrap break-words max-w-[85%]';
+        ? 'bg-[var(--primary-color)] text-white text-right'
+        : 'bg-gray-800 text-gray-100 text-left'
+      ) + ' rounded-lg p-3 shadow-sm whitespace-pre-wrap min-w-[120px] max-w-[50%]';
       bubble.innerHTML = escapeHtml(text);
 
       const name = document.createElement('p');
@@ -125,7 +130,7 @@
       else { row.appendChild(avatar); row.appendChild(col); }
 
       list.appendChild(row);
-      wrap.scrollTop = wrap.scrollHeight; // siempre baja al final
+      wrap.scrollTop = wrap.scrollHeight;
     }
 
     function appendThinking() {
@@ -134,11 +139,11 @@
       el.id = id;
       el.className = 'flex items-start gap-3';
       el.innerHTML = `
-        <div class="bg-center bg-no-repeat bg-cover rounded-full w-10 h-10 shrink-0"
-             style='background-image:url("https://lh3.googleusercontent.com/aida-public/AB6AXuApPNd_pMKqOWb0mS5tTZfO802x54MC5_MUNIBYP63qq1Qt6EePxkCd4O4TYtf8XMsAjNN-mCVDxCTQsgASddCe-aHOtn_n7Ojv6U99H-ux5LYx5mTlz3HhrQa4akXTFtlLgidqdYKJ56quUSIzRD73eMYVHNZ0O259OkAnscCnercjuZnPt3ckiwdvaaKDSh6bskduo_9ZWZrRNNGyCk5mgrUMjFom4KCnPuFR3fCy8cxumS8uY_id5VKEtqfxOWPVjBBWmadYi2A5");'></div>
-        <div class="bg-gray-800 rounded-lg p-3 shadow-sm max-w-[85%] text-gray-100">
-          <span class="animate-pulse">Pensando…</span>
-        </div>`;
+      <div class="bg-center bg-no-repeat bg-cover rounded-full w-10 h-10 shrink-0"
+           style='background-image:url("https://i.pravatar.cc/100?img=5");'></div>
+      <div class="bg-gray-800 rounded-lg p-3 shadow-sm min-w-[120px] max-w-[50%] text-gray-100 text-left">
+        <span class="animate-pulse">Pensando…</span>
+      </div>`;
       list.appendChild(el);
       wrap.scrollTop = wrap.scrollHeight;
       return id;
@@ -175,7 +180,6 @@
 
     function autoResize() {
       inputEl.style.height = 'auto';
-      inputEl.style.height = Math.min(inputEl.scrollHeight, 160) + 'px';
     }
 
     inputEl.addEventListener('input', () => { autoResize(); relayout(); });
@@ -184,7 +188,6 @@
     });
     sendBtn.addEventListener('click', sendMessage);
 
-    // Layout inicial
     document.addEventListener('DOMContentLoaded', () => { autoResize(); relayout(); });
   </script>
 </body>

@@ -1,34 +1,39 @@
-from flask import Flask, request, jsonify
 import os
-import openai
-from langchain_community.document_loaders import PyPDFLoader
+from flask import Flask, request, jsonify, render_template
+from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_openai import AzureOpenAIEmbeddings
+from langchain_openai import AzureOpenAIEmbeddings, AzureChatOpenAI
 from langchain_pinecone import PineconeVectorStore
-from langchain.chains.question_answering import load_qa_chain
-from langchain_community.chat_models import AzureChatOpenAI
 from pinecone import Pinecone, ServerlessSpec
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain.prompts import ChatPromptTemplate
 
 # ========================
 # CONFIGURACIÓN
 # ========================
 
-
-openai.api_key = os.environ["AZURE_OPENAI_API_KEY"]
-openai.api_base = os.environ["AZURE_OPENAI_API_BASE"]
-openai.api_type = "azure"
-openai.api_version = os.environ["AZURE_OPENAI_API_VERSION"]
+os.environ["AZURE_OPENAI_API_KEY"] = "TU_API_KEY"
+os.environ["AZURE_OPENAI_API_BASE"] = "https://TU-RESOURCE.openai.azure.com"
+os.environ["AZURE_OPENAI_DEPLOYMENT"] = "text-embedding-ada-002"
+os.environ["AZURE_OPENAI_API_VERSION"] = "2023-05-15"
+os.environ["PINECONE_API_KEY"] = "TU_PINECONE_KEY"
 
 # ========================
-# PREPARAR VECTORSTORE
+# CARGA DE DOCUMENTOS (TODOS LOS PDFs DE ./docs)
 # ========================
-pdf_path = "./docs/corollacross_brochure.pdf"
-loader = PyPDFLoader(pdf_path)
+print("📂 Cargando documentos de ./docs ...")
+loader = DirectoryLoader("./docs", glob="**/*.pdf", loader_cls=PyPDFLoader)
 documents = loader.load()
+print(f"✔️ Se cargaron {len(documents)} documentos en total")
 
+# Dividir en chunks
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
 docs = text_splitter.split_documents(documents)
+print(f"📑 Divididos en {len(docs)} chunks")
 
+# ========================
+# EMBEDDINGS + PINECONE
+# ========================
 embeddings = AzureOpenAIEmbeddings(
     azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT"],
     openai_api_key=os.environ["AZURE_OPENAI_API_KEY"],
@@ -39,34 +44,43 @@ embeddings = AzureOpenAIEmbeddings(
 pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
 index_name = "langchain-demo2"
 
-if pc.has_index(index_name):
-    pc.delete_index(index_name)
-
-# Crear de nuevo con la dimensión correcta (1536)
+# Crear índice si no existe
 if not pc.has_index(index_name):
+    print("🛠️ Creando índice en Pinecone ...")
     pc.create_index(
         name=index_name,
-        dimension=1536,
+        dimension=1536,  # embeddings de ada-002
         metric="cosine",
         spec=ServerlessSpec(cloud="aws", region="us-east-1")
     )
 
-
+# Conectar vectorstore
 vectorstore = PineconeVectorStore(index_name=index_name, embedding=embeddings)
+
+# Subir documentos
+print("⬆️ Subiendo embeddings a Pinecone ...")
 vectorstore.add_documents(docs)
-
-llm = AzureChatOpenAI(
-    temperature=0,
-    openai_api_base=os.environ["AZURE_OPENAI_API_BASE"],
-    openai_api_key=os.environ["AZURE_OPENAI_API_KEY"],
-    openai_api_version=os.environ.get("AZURE_OPENAI_API_VERSION", "2024-10-21"),
-    deployment_name=os.environ.get("AZURE_OPENAI_GPT4_MODEL_NAME", "gpt-4o")
-)
-
-chain = load_qa_chain(llm, chain_type="stuff")
+print("✔️ Embeddings almacenados en Pinecone")
 
 # ========================
-# SERVIDOR FLASK
+# MODELO DE QA
+# ========================
+llm = AzureChatOpenAI(
+    temperature=0,
+    azure_endpoint=os.environ["AZURE_OPENAI_API_BASE"],
+    openai_api_key=os.environ["AZURE_OPENAI_API_KEY"],
+    openai_api_version=os.environ["AZURE_OPENAI_API_VERSION"],
+    deployment_name="gpt-4o"  # ⚠️ ajusta a tu deployment
+)
+
+# Definir prompt y chain
+prompt = ChatPromptTemplate.from_template(
+    "Usa el contexto para responder la pregunta de forma clara.\n\nContexto:\n{context}\n\nPregunta:\n{input}"
+)
+chain = create_stuff_documents_chain(llm, prompt)
+
+# ========================
+# FLASK SERVER
 # ========================
 app = Flask(__name__)
 
@@ -82,7 +96,7 @@ def ask():
     retrieved_docs = vectorstore.similarity_search(query, k=3)
 
     # Ejecutar cadena de QA
-    result = chain.run(input_documents=retrieved_docs, question=query)
+    result = chain.invoke({"input": query, "context": retrieved_docs})
 
     return jsonify({"question": query, "answer": result})
 
@@ -97,6 +111,9 @@ from flask import render_template
 def home():
     return render_template("index.html")
 
+# ========================
+# MAIN
+# ========================
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)
-
