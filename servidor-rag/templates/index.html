@@ -1,48 +1,114 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tienda IA</title>
+
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- Paleta del diseño original -->
   <style>
-    body { font-family: 'Poppins', sans-serif; }
-    .hero { background: linear-gradient(to right, #4facfe, #00f2fe); color: white; padding: 80px 20px; text-align: center; }
-    .btn-chat { background: #ff6f61; color: white; font-size: 1.2rem; padding: 15px 30px; border-radius: 50px; }
-    .btn-chat:hover { background: #ff3b2f; }
-    .carousel-item img { object-fit: cover; height: 400px; border-radius: 10px; }
-    footer { background: #333; color: #ddd; text-align: center; padding: 20px; margin-top: 40px; }
+    :root{
+      --primary-color:#0d78f2;
+      --secondary-color:#f0f2f5;
+      --text-primary:#111418;
+      --text-secondary:#6b7280;
+      --background-color:#ffffff;
+    }
+    body{ font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; background:var(--background-color); }
+    .badge-pill{
+      display:inline-block; padding:.5rem 1rem; border-radius:999px; font-weight:600;
+      background:rgba(13,120,242,.1); color:var(--primary-color);
+    }
+    .btn-cta{
+      background:var(--primary-color); color:#fff; font-weight:600; padding:.9rem 2rem; border-radius:.75rem;
+      box-shadow:0 6px 18px rgba(13,120,242,.25); transition:transform .2s ease, opacity .2s ease;
+    }
+    .btn-cta:hover{ transform:scale(1.03); color:#fff; opacity:.95; }
+    .lead-muted{ color:var(--text-secondary); }
+    /* Carrusel existente */
+    .carousel-item img{ object-fit:cover; height:400px; border-radius:10px; }
+    footer{ background:#333; color:#ddd; text-align:center; padding:20px; margin-top:40px; }
   </style>
+  <style>
+  .navbar .nav-link{ color:#111418; }
+  .navbar .nav-link:hover{ color:#0d78f2; }
+  .navbar .nav-link.active{ color:#0d78f2; }
+</style>
 </head>
+
+
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="#">Mi Tienda IA</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Productos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Ofertas</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <!-- Navbar (igual que antes) -->
+ <!-- Navbar BLANCA con links centrados -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm sticky-top">
+  <div class="container position-relative">
 
-  <!-- Hero -->
-  <section class="hero">
-    <h1 class="display-4 fw-bold">Bienvenido a Mi Tienda IA</h1>
-    <p class="lead">Los mejores productos con la mejor atención al cliente</p>
-    <a href="/chat" class="btn btn-chat mt-3">💬 Inicia el Chat</a>
+    <!-- Marca a la izquierda -->
+    <a class="navbar-brand d-flex align-items-center text-dark fw-bold" href="#">
+      <!-- icono opcional -->
+      <svg width="28" height="28" viewBox="0 0 48 48" fill="#0d78f2" class="me-2">
+        <path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z"/>
+      </svg>
+      Tienda Online
+    </a>
+
+    <!-- Botón hamburguesa -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+            aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Links centrados -->
+    <div class="collapse navbar-collapse justify-content-center" id="mainNav">
+      <ul class="navbar-nav gap-lg-4">
+        <li class="nav-item">
+          <a class="nav-link fw-medium text-dark active" aria-current="page" href="#">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-medium text-dark" href="#">Productos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-medium text-dark" href="#">Contacto</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Carrito a la derecha -->
+    <a href="#" class="btn btn-light rounded-circle d-none d-lg-flex align-items-center justify-content-center shadow-sm"
+       style="width:40px;height:40px;" aria-label="Carrito">
+      <svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor">
+        <path d="M222.14,58.87A8,8,0,0,0,216,56H54.68L49.79,29.14A16,16,0,0,0,34.05,16H16a8,8,0,0,0,0,16h18L59.56,172.29a24,24,0,0,0,5.33,11.27,28,28,0,1,0,44.4,8.44h45.42A27.75,27.75,0,0,0,152,204a28,28,0,1,0,28-28H83.17a8,8,0,0,1-7.87-6.57L72.13,152h116a24,24,0,0,0,23.61-19.71l12.16-66.86A8,8,0,0,0,222.14,58.87ZM96,204a12,12,0,1,1-12-12A12,12,0,0,1,96,204Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,192,204Zm4-74.57A8,8,0,0,1,188.1,136H69.22L57.59,72H206.41Z"/>
+      </svg>
+    </a>
+  </div>
+</nav>
+
+
+  <!-- Hero NUEVO (integrando el diseño que enviaste) -->
+  <section class="py-5">
+    <div class="container text-center">
+      <span class="badge-pill">Asistente con IA</span>
+      <h1 class="display-4 fw-bold mt-3" style="color:var(--text-primary);">¿Necesitas ayuda?</h1>
+      <p class="lead lead-muted mx-auto mt-3" style="max-width:720px;">
+        Nuestro asistente virtual está disponible 24/7 para responder tus preguntas sobre productos, envíos, devoluciones y más.
+      </p>
+      <a href="/chat" class="btn btn-cta mt-4">
+        <!-- ícono chat -->
+        <svg class="me-2" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M18 10c0 3.866-3.582 7-8 7a8.837 8.837 0 01-4.43-1.252l-1.396.815a1 1 0 00-.63.92v.083c.018.52.48.941.998.941H10c4.418 0 8-3.134 8-7s-3.582-7-8-7a8.91 8.91 0 00-5.484 2.053l.638.37A1 1 0 005 6.22V5a1 1 0 00-2 0v2.783a1 1 0 00.388.79l1.45 1.058A6.96 6.96 0 0110 3c3.866 0 7 3.134 7 7z"/>
+          <path d="M10 5a1 1 0 011 1v4a1 1 0 11-2 0V6a1 1 0 011-1z"/><path d="M10 13a1 1 0 100 2 1 1 0 000-2z"/>
+        </svg>
+        Iniciar Chat
+      </a>
+    </div>
   </section>
 
-  <!-- Carrusel -->
+  <!-- Carrusel (igual que tenías) -->
   <div id="productosCarousel" class="carousel slide container my-5" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
@@ -75,7 +141,7 @@
     </button>
   </div>
 
-  <!-- Footer -->
+  <!-- Footer (igual) -->
   <footer>
     <p>&copy; 2025 Mi Tienda IA. Todos los derechos reservados.</p>
   </footer>
