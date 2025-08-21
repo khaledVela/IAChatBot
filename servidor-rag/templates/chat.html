@@ -113,8 +113,8 @@
 
       const bubble = document.createElement('div');
       bubble.className = (isUser
-        ? 'bg-[var(--primary-color)] text-white text-right'
-        : 'bg-gray-800 text-gray-100 text-left'
+        ? 'bg-[var(--primary-color)] text-white mr-12'
+        : 'bg-gray-800 text-gray-100 text-left ml-12'
       ) + ' rounded-lg p-3 shadow-sm whitespace-pre-wrap min-w-[120px] max-w-[50%]';
       bubble.innerHTML = escapeHtml(text);
 
@@ -141,7 +141,7 @@
       el.innerHTML = `
       <div class="bg-center bg-no-repeat bg-cover rounded-full w-10 h-10 shrink-0"
            style='background-image:url("https://i.pravatar.cc/100?img=5");'></div>
-      <div class="bg-gray-800 rounded-lg p-3 shadow-sm min-w-[120px] max-w-[50%] text-gray-100 text-left">
+      <div class="bg-gray-800 rounded-lg p-3 shadow-sm min-w-[120px] max-w-[50%] text-gray-100 text-left ml-12">
         <span class="animate-pulse">Pensando…</span>
       </div>`;
       list.appendChild(el);
