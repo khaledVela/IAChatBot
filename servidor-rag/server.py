@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, jsonify, render_template
+from datetime import datetime
 from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import AzureOpenAIEmbeddings, AzureChatOpenAI
@@ -98,14 +99,28 @@ def ask():
     # Ejecutar cadena de QA
     result = chain.invoke({"input": query, "context": retrieved_docs})
 
+    # Si no hay respuesta, guardamos en unanswered_questions.txt
+    if not result or str(result).strip() == "":
+        save_unanswered(query)
+        return jsonify({"question": query, "answer": "Lo siento, no encontré información sobre eso."}), 200
+
     return jsonify({"question": query, "answer": result})
 
-from flask import render_template
+# ========================
+# FUNCION PARA GUARDAR PREGUNTAS SIN RESPUESTA
+# ========================
+def save_unanswered(question: str):
+    log_file = "unanswered_questions.txt"
+    with open(log_file, "a", encoding="utf-8") as f:
+        f.write(f"[{datetime.now().isoformat()}] {question}\n")
+    print(f"❌ Guardada pregunta sin respuesta: {question}")
 
+# ========================
+# RUTAS PARA FRONTEND
+# ========================
 @app.route("/chat", methods=["GET"])
 def chat():
     return render_template("chat.html")
-from flask import render_template
 
 @app.route("/", methods=["GET"])
 def home():
@@ -114,6 +129,5 @@ def home():
 # ========================
 # MAIN
 # ========================
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)
