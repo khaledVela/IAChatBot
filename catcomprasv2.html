@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- En la sección <head>, agrega este enlace para los íconos FontAwesome -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Catálogo de Productos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f8f8f8;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .catalogo {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .producto {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 250px;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .producto img {
+            max-width: 100%;
+            border-radius: 8px;
+            object-fit: cover;
+            height: 150px;
+        }
+        .nombre {
+            font-weight: bold;
+            margin: 10px 0 5px;
+            color: #222;
+        }
+        .descripcion {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .precio {
+            font-size: 16px;
+            font-weight: bold;
+            color: #007BFF;
+            margin-bottom: 10px;
+        }
+        .btn-comprar {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .btn-comprar:hover {
+            background-color: #218838;
+        }
+        /* Diseño responsive para móviles */
+        @media (max-width: 600px) {
+            .catalogo {
+                flex-direction: column;
+                align-items: center;
+            }
+            .producto {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Catálogo de Productos</h1>
+    <div class="catalogo">
+        <div class="producto">
+            <img src="redes.jpg" alt="Producto 1" />
+            <div class="nombre">Producto 1</div>
+            <div class="descripcion">Descripción breve del producto número 1.</div>
+            <div class="precio">$15.00</div>
+            <a href="https://ejemplo.com/comprar/producto1" class="btn-comprar" target="_blank" rel="noopener">Comprar</a>
+        </div>
+        <div class="producto">
+            <img src="sistemas.jpg" alt="Producto 2" />
+            <div class="nombre">Producto 2</div>
+            <div class="descripcion">Descripción breve del producto número 2.</div>
+            <div class="precio">$25.00</div>
+            <a href="https://ejemplo.com/comprar/producto2" class="btn-comprar" target="_blank" rel="noopener">Comprar</a>
+        </div>
+        <div class="producto">
+            <img src="financiera.jpg" alt="Producto 3" />
+            <div class="nombre">Producto 3</div>
+            <div class="descripcion">Descripción breve del producto número 3.</div>
+            <div class="precio">$30.00</div>
+            <a href="https://ejemplo.com/comprar/producto3" class="btn-comprar" target="_blank" rel="noopener">Comprar</a>
+        </div>
+    </div>
+<!-- Al final del <body>, antes de cerrar la etiqueta, agrega este botón flotante -->
+<a href="https://wa.me/59170817070?text=Hola%20quiero%20informaci%C3%B3n" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat WhatsApp">
+  <i class="fa fa-whatsapp whatsapp-icon"></i>
+</a>
+
+<style>
+  .whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #25d366;
+    color: white;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+  .whatsapp-float:hover {
+    background-color: #128c7e;
+  }
+  .whatsapp-icon {
+    margin: 0;
+  }
+</style>
+
+</body>
+
+</html>
