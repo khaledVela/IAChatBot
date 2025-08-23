@@ -61,11 +61,10 @@ tu_proyecto/
 │  └─ ...pdf
 ├─ templates/
 │  └─ index.html              # catálogo + mini-chat (tu archivo)
-└─ static/
-   └─ images/
-      ├─ redes.jpg
-      ├─ sistemas.jpg
-      └─ financiera.jpg
+└─ images/
+   ├─ redes.jpg
+   ├─ sistemas.jpg
+   └─ financiera.jpg
 ```
 
 > Si prefieres rutas tipo `/servidor-rag/images/...`, usa `static_url_path="/servidor-rag"` o mapea esa carpeta como estático (ver §7).
