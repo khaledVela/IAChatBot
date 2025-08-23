@@ -13,7 +13,7 @@ from langchain.prompts import ChatPromptTemplate
 # CONFIGURACIÓN
 # ========================
 
-os.environ["AZURE_OPENAI_API_KEY"] = "TU_API_KEY"
+ os.environ["AZURE_OPENAI_API_KEY"] = "TU_API_KEY"
 os.environ["AZURE_OPENAI_API_BASE"] = "https://TU-RESOURCE.openai.azure.com"
 os.environ["AZURE_OPENAI_DEPLOYMENT"] = "text-embedding-ada-002"
 os.environ["AZURE_OPENAI_API_VERSION"] = "2023-05-15"
@@ -83,7 +83,7 @@ chain = create_stuff_documents_chain(llm, prompt)
 # ========================
 # FLASK SERVER
 # ========================
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates", static_folder="images")
 
 @app.route("/ask", methods=["POST"])
 def ask():

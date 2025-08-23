@@ -379,13 +379,13 @@
 </head>
 
 <body>
-    <h1>Catálogo de Productos</h1>
+    <h1>Carreras Disponibles</h1>
 
     <div class="catalogo">
-        <div class="producto" data-producto="Producto 1">
-            <img src="/servidor-rag/images/redes.jpg" alt="Producto 1" />
-            <div class="nombre">Producto 1</div>
-            <div class="descripcion">Descripción breve del producto número 1.</div>
+        <div class="producto" data-producto="Ingenieria comercial">
+            <img src="{{ url_for('static', filename='redes.jpg') }}" alt="Ingenieria comercial" />
+            <div class="nombre">Ingenieria comercial</div>
+            <div class="descripcion">Formar profesionales capaces de crear, gestionar y asesorar la actividad comercial de todo tipo de empresas de manera eficiente y competitiva con responsabilidad social y espíritu emprendedor, respondiendo de manera creativa e innovadora a las oportunidades del entorno.</div>
             <div class="precio">$15.00</div>
             <div style="display:flex; gap:8px; justify-content:center;">
                 <a href="https://ejemplo.com/comprar/producto1" class="btn-comprar" target="_blank"
@@ -394,10 +394,10 @@
             </div>
         </div>
 
-        <div class="producto" data-producto="Producto 2">
-            <img src="/servidor-rag/images/sistemas.jpg" alt="Producto 2" />
-            <div class="nombre">Producto 2</div>
-            <div class="descripcion">Descripción breve del producto número 2.</div>
+        <div class="producto" data-producto="Ingenieria de Sistemas">
+            <img src="{{ url_for('static', filename='sistemas.jpg') }}" alt="Ingenieria de Sistemas" />
+            <div class="nombre">Ingenieria de Sistemas</div>
+            <div class="descripcion">Formar Profesionales con sólidos conocimientos científicos y tecnológicos para aplicar procesos interactivos de análisis, diseño, implementación y evaluación de sistemas de información.</div>
             <div class="precio">$25.00</div>
             <div style="display:flex; gap:8px; justify-content:center;">
                 <a href="https://ejemplo.com/comprar/producto2" class="btn-comprar" target="_blank"
@@ -406,10 +406,10 @@
             </div>
         </div>
 
-        <div class="producto" data-producto="Producto 3">
-            <img src="/servidor-rag/images/financiera.jpg" alt="Producto 3" />
-            <div class="nombre">Producto 3</div>
-            <div class="descripcion">Descripción breve del producto número 3.</div>
+        <div class="producto" data-producto="Ingenieria Financiera">
+            <img src="{{ url_for('static', filename='financiera.jpg') }}" alt="Ingenieria Financiera" />
+            <div class="nombre">Ingenieria Financiera</div>
+            <div class="descripcion">Formar profesionales integrales y líderes, capaces de generar impacto tanto en la empresa como en la comunidad, mediante el análisis y la planificación financiera de corto y largo plazo</div>
             <div class="precio">$30.00</div>
             <div style="display:flex; gap:8px; justify-content:center;">
                 <a href="https://ejemplo.com/comprar/producto3" class="btn-comprar" target="_blank"
