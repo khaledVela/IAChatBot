@@ -1,33 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-<!-- En la sección <head>, agrega este enlace para los íconos FontAwesome -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
+<head>
+    <!-- Íconos FontAwesome para el botón -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Catálogo de Productos</title>
+
     <style>
+        :root {
+            --mc-green: #25d366;
+            --mc-green-dark: #128c7e;
+            --mc-blue: #007bff;
+            --text-1: #222;
+            --text-2: #666;
+            --bg: #f8f8f8;
+            --card: #fff;
+            --shadow: 0 2px 5px rgba(0, 0, 0, .1);
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
-            background-color: #f8f8f8;
+            background: var(--bg);
+            color: var(--text-1);
+            margin: 0;
         }
+
         h1 {
             text-align: center;
             color: #333;
+            margin: 0 0 18px;
         }
+
         .catalogo {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
+            margin-bottom: 120px;
         }
+
         .producto {
-            background-color: white;
+            background: var(--card);
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
             width: 250px;
             padding: 15px;
             text-align: center;
@@ -35,112 +58,650 @@
             flex-direction: column;
             justify-content: space-between;
         }
+
         .producto img {
             max-width: 100%;
             border-radius: 8px;
             object-fit: cover;
             height: 150px;
         }
+
         .nombre {
             font-weight: bold;
             margin: 10px 0 5px;
-            color: #222;
         }
+
         .descripcion {
             font-size: 14px;
-            color: #666;
+            color: var(--text-2);
             margin-bottom: 10px;
         }
+
         .precio {
             font-size: 16px;
             font-weight: bold;
-            color: #007BFF;
+            color: var(--mc-blue);
             margin-bottom: 10px;
         }
-        .btn-comprar {
-            background-color: #28a745;
-            color: white;
+
+        .btn-comprar,
+        .btn-preguntar {
+            background: #28a745;
+            color: #fff;
             padding: 10px 12px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             text-decoration: none;
             font-weight: bold;
-            transition: background-color 0.3s;
+            transition: background .3s;
+            display: inline-block;
         }
+
         .btn-comprar:hover {
-            background-color: #218838;
+            background: #218838;
         }
-        /* Diseño responsive para móviles */
-        @media (max-width: 600px) {
+
+        .btn-preguntar {
+            background: #0ea5e9;
+        }
+
+        .btn-preguntar:hover {
+            background: #0284c7;
+        }
+
+        @media (max-width:600px) {
             .catalogo {
                 flex-direction: column;
                 align-items: center;
             }
+
             .producto {
-                width: 90%;
+                width: 92%;
+            }
+        }
+
+        /* Botón flotante */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background: var(--mc-green);
+            color: #fff;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, .2);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            transition: background .25s, transform .1s;
+        }
+
+        .whatsapp-float:hover {
+            background: var(--mc-green-dark);
+        }
+
+        .whatsapp-float:active {
+            transform: translateY(1px);
+        }
+
+        .whatsapp-icon {
+            margin: 0;
+        }
+
+        @media (max-width:600px) {
+            .whatsapp-float {
+                right: 16px;
+                bottom: 16px;
+            }
+        }
+
+        /* Chat */
+        .hidden {
+            display: none !important;
+        }
+
+        .chat-widget {
+            position: fixed;
+            right: 40px;
+            bottom: 110px;
+            width: 340px;
+            max-height: 72vh;
+            background: #fff;
+            border: 1px solid #e7ecef;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .18);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 101;
+            color: #111;
+            font-family: Arial, sans-serif;
+        }
+
+        .chat-header {
+            background: var(--mc-green-dark);
+            color: #fff;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--mc-green);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .chat-title {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .chat-status {
+            font-size: 12px;
+            opacity: .95;
+        }
+
+        .chat-close {
+            appearance: none;
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 22px;
+            line-height: 1;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .chat-close:hover {
+            background: rgba(255, 255, 255, .18);
+        }
+
+        .chat-messages {
+            padding: 12px;
+            overflow: auto;
+            gap: 8px;
+            display: flex;
+            flex-direction: column;
+            background: #f5f7f9;
+        }
+
+        .msg {
+            display: flex;
+        }
+
+        .msg-bot {
+            justify-content: flex-start;
+        }
+
+        .msg-user {
+            justify-content: flex-end;
+        }
+
+        .bubble {
+            max-width: 78%;
+            padding: 9px 12px;
+            border-radius: 12px;
+            line-height: 1.35;
+            font-size: 14px;
+            white-space: pre-wrap;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, .06);
+        }
+
+        .msg-bot .bubble {
+            background: #fff;
+            border: 1px solid #e7ecef;
+        }
+
+        .msg-user .bubble {
+            background: #dcf8c6;
+        }
+
+        .typing {
+            display: inline-flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .typing span {
+            width: 6px;
+            height: 6px;
+            background: #cfd6db;
+            display: block;
+            border-radius: 50%;
+            animation: blink 1.2s infinite ease-in-out;
+        }
+
+        .typing span:nth-child(2) {
+            animation-delay: .2s;
+        }
+
+        .typing span:nth-child(3) {
+            animation-delay: .4s;
+        }
+
+        @keyframes blink {
+
+            0%,
+            80%,
+            100% {
+                opacity: .2
+            }
+
+            40% {
+                opacity: 1
+            }
+        }
+
+        .chat-composer {
+            display: flex;
+            gap: 8px;
+            padding: 10px;
+            background: #fff;
+            border-top: 1px solid #e7ecef;
+            align-items: end;
+        }
+
+        .chat-input {
+            flex: 1;
+            resize: none;
+            padding: 10px 12px;
+            border: 1px solid #d7dee3;
+            border-radius: 10px;
+            outline: none;
+            font-size: 14px;
+            max-height: 120px;
+            overflow: auto;
+        }
+
+        .chat-input:focus {
+            border-color: var(--mc-green-dark);
+            box-shadow: 0 0 0 2px rgba(18, 140, 126, .12);
+        }
+
+        .chat-send {
+            appearance: none;
+            border: none;
+            background: var(--mc-green);
+            color: #fff;
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-send:hover {
+            background: #1fb85a;
+        }
+
+        .chat-send:disabled {
+            background: #c9eacd;
+            cursor: not-allowed;
+        }
+
+        @media (max-width:600px) {
+            .chat-widget {
+                right: 4vw;
+                bottom: 84px;
+                width: 92vw;
+                max-height: 70vh;
             }
         }
     </style>
 </head>
+
 <body>
     <h1>Catálogo de Productos</h1>
+
     <div class="catalogo">
-        <div class="producto">
-            <img src="../images/redes.jpg" alt="Producto 1" />
+        <div class="producto" data-producto="Producto 1">
+            <img src="/servidor-rag/images/redes.jpg" alt="Producto 1" />
             <div class="nombre">Producto 1</div>
             <div class="descripcion">Descripción breve del producto número 1.</div>
             <div class="precio">$15.00</div>
-            <a href="https://ejemplo.com/comprar/producto1" class="btn-comprar" target="_blank" rel="noopener">Comprar</a>
+            <div style="display:flex; gap:8px; justify-content:center;">
+                <a href="https://ejemplo.com/comprar/producto1" class="btn-comprar" target="_blank"
+                    rel="noopener">Comprar</a>
+                <button class="btn-preguntar" data-ask>Preguntar</button>
+            </div>
         </div>
-        <div class="producto">
-            <img src="../images/sistemas.jpg" alt="Producto 2" />
+
+        <div class="producto" data-producto="Producto 2">
+            <img src="/servidor-rag/images/sistemas.jpg" alt="Producto 2" />
             <div class="nombre">Producto 2</div>
             <div class="descripcion">Descripción breve del producto número 2.</div>
             <div class="precio">$25.00</div>
-            <a href="https://ejemplo.com/comprar/producto2" class="btn-comprar" target="_blank" rel="noopener">Comprar</a>
+            <div style="display:flex; gap:8px; justify-content:center;">
+                <a href="https://ejemplo.com/comprar/producto2" class="btn-comprar" target="_blank"
+                    rel="noopener">Comprar</a>
+                <button class="btn-preguntar" data-ask>Preguntar</button>
+            </div>
         </div>
-        <div class="producto">
-            <img src="../images/financiera.jpg" alt="Producto 3" />
+
+        <div class="producto" data-producto="Producto 3">
+            <img src="/servidor-rag/images/financiera.jpg" alt="Producto 3" />
             <div class="nombre">Producto 3</div>
             <div class="descripcion">Descripción breve del producto número 3.</div>
             <div class="precio">$30.00</div>
-            <a href="https://ejemplo.com/comprar/producto3" class="btn-comprar" target="_blank" rel="noopener">Comprar</a>
+            <div style="display:flex; gap:8px; justify-content:center;">
+                <a href="https://ejemplo.com/comprar/producto3" class="btn-comprar" target="_blank"
+                    rel="noopener">Comprar</a>
+                <button class="btn-preguntar" data-ask>Preguntar</button>
+            </div>
         </div>
     </div>
-<!-- Al final del <body>, antes de cerrar la etiqueta, agrega este botón flotante -->
-<a href="https://wa.me/59170817070?text=Hola%20quiero%20informaci%C3%B3n" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat WhatsApp">
-  <i class="fa fa-whatsapp whatsapp-icon"></i>
-</a>
 
-<style>
-  .whatsapp-float {
-    position: fixed;
-    width: 60px;
-    height: 60px;
-    bottom: 40px;
-    right: 40px;
-    background-color: #25d366;
-    color: white;
-    border-radius: 50px;
-    text-align: center;
-    font-size: 30px;
-    box-shadow: 2px 2px 3px #999;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
-  }
-  .whatsapp-float:hover {
-    background-color: #128c7e;
-  }
-  .whatsapp-icon {
-    margin: 0;
-  }
-</style>
+    <!-- Botón flotante que abre/cierra el chat (reinicia al clic) -->
+    <button id="chatToggleBtn" class="whatsapp-float" aria-label="Abrir chat">
+        <i class="fa fa-whatsapp whatsapp-icon"></i>
+    </button>
 
+    <!-- Mini-ventana del chat -->
+    <div id="chatWidget" class="chat-widget hidden" aria-live="polite" aria-label="Chat con asistente">
+        <div class="chat-header">
+            <div class="chat-header-left">
+                <div class="chat-avatar" aria-hidden="true">AI</div>
+                <div class="chat-title">
+                    <strong>Asistente</strong>
+                    <span id="chatStatus" class="chat-status">Conectando…</span>
+                </div>
+            </div>
+            <button id="chatClose" class="chat-close" title="Cerrar chat" aria-label="Cerrar chat">×</button>
+        </div>
+
+        <div id="chatMessages" class="chat-messages">
+            <!-- Se rellena dinámicamente -->
+        </div>
+
+        <form id="chatForm" class="chat-composer" autocomplete="off">
+            <textarea id="chatInput" class="chat-input" rows="1" placeholder="Escribe un mensaje…"></textarea>
+            <button id="chatSend" class="chat-send" title="Enviar" aria-label="Enviar">➤</button>
+        </form>
+    </div>
+
+    <script>
+        (function () {
+            // === Config soporte ===
+            const SUPPORT_URL = 'http://localhost:21465/api/enviar-archivo/cuenta1';
+            const SUPPORT_NUM = '59176392492'; // número fijo (destinatario en la app)
+            const API_KEY = '3qjmKL/HukaTIunlwV0Yi5+2BiOLJ+2IY9TkesKy5BI=';
+            const HEADER_NAME = 'api-key'; // o 'x-api-key' si tu API lo espera así
+
+            const $ = (q, ctx = document) => ctx.querySelector(q);
+            const btn = $('#chatToggleBtn');
+            const widget = $('#chatWidget');
+            const closeBtn = $('#chatClose');
+            const form = $('#chatForm');
+            const input = $('#chatInput');
+            const sendBtn = $('#chatSend');
+            const messages = $('#chatMessages');
+            const statusEl = $('#chatStatus');
+
+            // Estado
+            let supportFlowActive = false;
+            let awaitingPhone = false;
+            let clientPhone = null;
+            let transcript = [];
+            let openedOnce = false;
+
+            // Reinicio completo del chat
+            function resetChat() {
+                messages.innerHTML = '';
+                const init = document.createElement('div');
+                init.className = 'msg msg-bot';
+                init.innerHTML = '<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
+                messages.appendChild(init);
+
+                transcript = [];
+                supportFlowActive = false;
+                awaitingPhone = false;
+                clientPhone = null;
+
+                input.disabled = false;
+                sendBtn.disabled = false;
+                input.value = '';
+                input.style.height = 'auto';
+
+                statusEl.textContent = 'Conectando…';
+                openedOnce = false; // para que vuelva a lanzar el saludo
+            }
+
+            // Botón flotante: reiniciar e iniciar
+            btn.addEventListener('click', () => {
+                resetChat();
+                toggleWidget(true);
+            });
+
+            closeBtn.addEventListener('click', () => toggleWidget(false));
+
+            function toggleWidget(show) {
+                if (show) {
+                    widget.classList.remove('hidden');
+                    input.focus();
+                    if (!openedOnce) {
+                        openedOnce = true;
+                        simulateHandshake();
+                    }
+                    scrollToBottom();
+                } else {
+                    widget.classList.add('hidden');
+                }
+            }
+
+            function simulateHandshake() {
+                statusEl.textContent = 'Conectado';
+                setTimeout(() => {
+                    replaceTypingWith('¡Hola! Soy tu asistente. Puedo responder preguntas del catálogo y de tus documentos.\nEscribe "soporte" para hablar con una persona.');
+                }, 800);
+            }
+
+            // Mensajería
+            function addMsg(role, text) {
+                const row = document.createElement('div');
+                row.className = 'msg ' + (role === 'user' ? 'msg-user' : 'msg-bot');
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.textContent = text;
+                row.appendChild(bubble);
+                messages.appendChild(row);
+                transcript.push({ role, text, ts: new Date().toISOString() });
+                scrollToBottom();
+            }
+
+            function addTyping() {
+                const id = 't-' + (crypto?.randomUUID?.() || Date.now());
+                const row = document.createElement('div');
+                row.className = 'msg msg-bot';
+                row.id = id;
+                row.innerHTML = '<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
+                messages.appendChild(row);
+                scrollToBottom();
+                return id;
+            }
+
+            function replaceTypingWith(text) {
+                const firstTyping = messages.querySelector('.msg-bot .typing');
+                if (firstTyping) {
+                    firstTyping.parentElement.textContent = text;
+                    transcript.push({ role: 'bot', text, ts: new Date().toISOString() });
+                } else {
+                    addMsg('bot', text);
+                }
+            }
+
+            function scrollToBottom() { messages.scrollTop = messages.scrollHeight; }
+
+            async function askServer(question) {
+                const id = addTyping();
+                sendBtn.disabled = true;
+                try {
+                    const res = await fetch('/ask', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ question })
+                    });
+                    const data = await res.json();
+                    const botText = res.ok ? (data?.answer ?? 'Sin respuesta') : (data?.error || 'Error del servidor');
+                    document.getElementById(id)?.remove();
+                    addMsg('bot', botText);
+                } catch {
+                    document.getElementById(id)?.remove();
+                    addMsg('bot', 'Error de red. ¿El servidor está activo?');
+                } finally {
+                    sendBtn.disabled = false;
+                    scrollToBottom();
+                }
+            }
+
+            // Auto-resize
+            function autoresize() {
+                input.style.height = 'auto';
+                input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+            }
+            input.addEventListener('input', autoresize);
+
+            // Enter = enviar (Shift+Enter = nueva línea)
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    form.requestSubmit();
+                }
+            });
+
+            // Validación simple de número (8–15 dígitos)
+            function looksLikePhone(s) {
+                const onlyDigits = s.replace(/\D+/g, '');
+                return onlyDigits.length >= 8 && onlyDigits.length <= 15 ? onlyDigits : null;
+            }
+
+            // Envío
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const text = input.value.trim();
+                if (!text) return;
+
+                addMsg('user', text);
+                input.value = '';
+                autoresize();
+
+                if (!supportFlowActive && text.toLowerCase() === 'soporte') {
+                    supportFlowActive = true;
+                    awaitingPhone = true;
+                    addMsg('bot', 'Perfecto. Indícame tu número (formato internacional, p. ej. 5917XXXXXXXX). Este número irá en el campo "texto" para el agente.');
+                    return;
+                }
+
+                if (supportFlowActive && awaitingPhone) {
+                    const normalized = looksLikePhone(text);
+                    if (!normalized) {
+                        addMsg('bot', 'Ese no parece un número válido. Intenta nuevamente (8 a 15 dígitos, con o sin 591).');
+                        return;
+                    }
+                    clientPhone = normalized;
+                    awaitingPhone = false;
+                    addMsg('bot', 'Gracias. Estoy enviando el historial del chat en un .txt a soporte…');
+                    try {
+                        await sendTranscriptTxtToSupport(clientPhone);
+                        addMsg('bot', 'Listo. Un agente humano te contactará pronto.');
+                        input.disabled = true; sendBtn.disabled = true;
+                    } catch (err) {
+                        addMsg('bot', 'No pude enviar a soporte. Intenta otra vez con "soporte" o usa otro canal.');
+                        supportFlowActive = false; awaitingPhone = false; clientPhone = null;
+                    }
+                    return;
+                }
+
+                if (!supportFlowActive) { askServer(text); }
+            });
+
+            // TXT del transcript
+            function transcriptToTxtBlob() {
+                const lines = transcript.map(m => {
+                    const who = m.role === 'user' ? 'USUARIO' : 'BOT';
+                    return `[${m.ts}] ${who}: ${m.text}`;
+                });
+                return new Blob([lines.join('\n')], { type: 'text/plain' });
+            }
+
+            // POST multipart a soporte
+            async function sendTranscriptTxtToSupport(userPhone) {
+                const fileBlob = transcriptToTxtBlob();
+                const filename = `chat-${Date.now()}.txt`;
+
+                const fd = new FormData();
+                fd.append('numero', SUPPORT_NUM);            // fijo
+                fd.append('texto', userPhone);              // número del cliente
+                fd.append('documento', fileBlob, filename);  // historial en TXT
+
+                const headers = { [HEADER_NAME]: API_KEY };  // 'api-key' o 'x-api-key'
+                const res = await fetch(SUPPORT_URL, { method: 'POST', headers, body: fd });
+
+                if (!res.ok) {
+                    let msg = 'Fallo del servicio de soporte';
+                    try { const j = await res.json(); if (j?.error) msg = j.error; } catch { }
+                    throw new Error(msg);
+                }
+            }
+
+            // “Preguntar” desde la tarjeta del producto
+            document.querySelectorAll('[data-ask]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const card = e.currentTarget.closest('.producto');
+                    const nombre = card?.dataset?.producto || 'este producto';
+                    const precio = card?.querySelector('.precio')?.textContent?.trim() || '';
+                    const desc = card?.querySelector('.descripcion')?.textContent?.trim() || '';
+                    if (widget.classList.contains('hidden')) {
+                        // si está cerrado, no reseteamos (flujo normal), solo abrimos
+                        toggleWidget(true);
+                        // ponemos burbuja typing si no la hay
+                        if (!messages.querySelector('.typing')) {
+                            const t = document.createElement('div');
+                            t.className = 'msg msg-bot';
+                            t.innerHTML = '<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
+                            messages.appendChild(t);
+                        }
+                        if (!openedOnce) { openedOnce = true; simulateHandshake(); }
+                    }
+                    setTimeout(() => {
+                        const texto = `Quiero más información sobre ${nombre} (${precio}). Detalle: ${desc}`;
+                        addMsg('user', texto);
+                        if (!supportFlowActive) askServer(texto);
+                    }, 60);
+                });
+            });
+
+            // Estado inicial: chat cerrado y sin contenido hasta clicar el botón
+            // (el contenido inicial se crea en resetChat() cuando clicas el botón verde)
+        })();
+    </script>
 </body>
 
 </html>
